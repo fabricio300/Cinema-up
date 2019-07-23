@@ -68,7 +68,17 @@
         v-show="estadoActual==3"
       >
           <p>acientos</p>
-          <div class="patalla"></div>
+          <div class="indicaciones centrar">
+            <div class="asientos"></div>
+            <p style="margin-right:5px;">disponible</p>
+            <div class="asientos apartado"></div>
+             <p style="margin-right:5px;">apartado</p>
+            <div class="asientos ocupado"></div>
+            <p style="margin-right:5px;">ocupado</p>
+          </div>
+          <div class="patalla centrar">
+            pantalla
+          </div>
           <div class="Contasientos centrar">
         
               <div class="filas" v-for="fil in  asientos">
@@ -76,6 +86,9 @@
                 
                 <div class="asientos centrar"
                   v-for="aciento in fil.sillas"
+                  v-bind:id="aciento.id"
+                  v-bind:class="{'ocupado' : aciento.status == true}"
+                  @click="getAciento(aciento.id)"
                 >
                   <p>{{aciento.numero}}</p>
                 </div>
@@ -165,8 +178,8 @@ export default {
         for (let index = 0; index < this.filas.length; index++) {
              tem=[]
             for (let i = 0; i <this.numeroDeSillaPorFila; i++) {
-                  
-                 let silla={fila:this.filas[index],numero:i+1,staus:true}
+                let n=i+1
+                 let silla={fila:this.filas[index],numero:n,status:false,id:""+this.filas[index]+n}
 
                 tem.push(silla)
             }
@@ -176,6 +189,11 @@ export default {
         this.asientos=filasx
         console.log("tem=\n", this.asientos);
         
+      },
+
+      getAciento(idAcineto){
+        console.log("Aciento= ",idAcineto);
+        document.getElementById(idAcineto).className="asientos apartado"
       }
   },
   created(){
@@ -202,6 +220,7 @@ export default {
     height: auto;
     background: black;
     color: white;
+   
 }
 
 .contimagen{
@@ -213,7 +232,7 @@ export default {
 }
 
 .cuadro{
-    background: green;
+    background: #0d315c;
     width: 65%;
     margin: auto;
     overflow: hidden;
@@ -221,8 +240,8 @@ export default {
 
 .barraItems{
   width: 100%;
-  background: red;
-  padding: 5px;
+  border-bottom: 1px solid gold;
+  padding-top: 5px;
 }
 
 .item{
@@ -241,11 +260,11 @@ export default {
   width: 100%;
   height: auto;
   padding: 10px;
-  background: palevioletred;
+  background: #0d315c;
 }
 
 .barrabotones{
-  background: red;
+  
   width: 100%;
 }
 .botones{
@@ -256,7 +275,7 @@ export default {
 }
 
 .contHorarios{
-  background: grey;
+  background: #0d315c;
   padding: 10px;
 }
 .Contasientos{
@@ -264,7 +283,7 @@ export default {
 }
 
 .filas{
-  background: blue;
+  
   display: flex;
   width: 100%;
   padding: 4px;
@@ -272,7 +291,8 @@ export default {
 }
 
 .asientos{
-  background: yellowgreen;
+  background: white;
+  color: black;
   width: 35px;
   height: 35px;
   text-align: center;
@@ -280,6 +300,24 @@ export default {
   margin: 2px ;
   border-bottom-left-radius: 50%;
    border-bottom-right-radius: 50%;
+}
+
+.patalla{
+  background: black;
+  border: 1px solid white;
+}
+
+.ocupado{
+  background: red;
+}
+
+.apartado{
+  background: #32CD32;
+}
+
+.indicaciones{
+  padding: 5px;
+  width: 100%;
 }
 </style>
 
