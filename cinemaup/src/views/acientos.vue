@@ -207,10 +207,30 @@ export default {
     }
   },
   methods:{
-
+      resetear(){
+          this.lugaresComprados.forEach(element => {
+              
+             document.getElementById(element.id).className="asientos "
+          });
+          this.asientos=[]
+          this.asientosOcupados=[]
+          this.boletosA=0
+          this.boletosN=0
+          this.boletosM=0
+          this.boletosCantidad=0
+          this.apartados=0
+          this.horaFuncion=0
+          this.lugaresComprados=[]
+          this.monstoTotal=0
+          this.masBoletos('A')
+          this.crearAcientos()
+      },
       irasuguiente(origen, info){
         let paso=false
         if(origen==1){
+          if(this.horaFuncion!=info){
+              this.resetear()
+          }
           this.horaFuncion=info
           paso=true
         }
@@ -337,7 +357,7 @@ export default {
   },
   created(){
    this.crearAcientos();
-   this.masBoletos('A');
+   
   }
    
 }
