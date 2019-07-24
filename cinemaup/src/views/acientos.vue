@@ -538,7 +538,12 @@ label{
     width: 50%;
     
     }
+
+.asientos{
+  width: 20px;
+  height: 20px;
   
+  }
 }
 
 
