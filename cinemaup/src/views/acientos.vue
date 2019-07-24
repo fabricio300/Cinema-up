@@ -1,6 +1,8 @@
 <template>
     <div class="contall centrar">
-       
+    
+
+
         <div class="contimagen">
             <p>pelicula</p>
         </div>
@@ -18,26 +20,19 @@
       <div class="contenidoBara"
         v-show="estadoActual==1"
       >
-          <p>Pelicula: pelicula</p>
-          <p>Genero: Genero</p>
-          <p>Clasificacion: A</p>
-          <p>Horario:</p>
+          <p  style="margin:15px;">Pelicula: pelicula</p>
+          <p style="margin:15px;">Genero: Genero</p>
+          <p style="margin:15px;">Clasificacion: A</p>
+          <p style="margin:15px;">Horarios:</p>
 
           <div class="contHorarios">
             <button class="monocromatico"
             style="padding:15px;"
             v-for="hora in arryHorarios"
+            @click="irasuguiente( 1, hora)"
             >{{hora}}</button>
           </div>
 
-        <div class="barrabotones">
-
-              <button class="botones"
-              @click="irasuguiente()"
-              >
-              Siguiente
-              </button>
-          </div>
 
       </div>
 
@@ -46,7 +41,52 @@
        <div class="contenidoBara"
         v-show="estadoActual==2"
       >
-          <p>222222</p>
+          
+          <div class="centrar">
+              <div class="datos">
+                <label >Pelicula: pelicula</label> <br>
+                <label >Fecha: 04/07/2019</label><br>
+                <label >Funcion: {{horaFuncion}}</label><br>
+              </div>
+              <div class="dinero centrar">
+                <p style="width:100%;text-align: center; font-size:23px;">SUBTOTAL</p>
+                <p style="width:100%;text-align: center;font-size:20px; color:gold;">${{monstoTotal}}</p>
+                <p style="width:100%;text-align: center;">iva incluido</p>
+              </div>
+          </div>
+
+          <div class="opboletos centrar">
+            <div class="tiposDeBoleto centrar">
+              <p style="width:100%;text-align: center;font-size:20px;">TIPO</p>
+              <p style="width:100%;text-align:center; margin:11px;">Adulto</p>
+              <p style="width:100%;text-align:center; margin:11px;">Niño</p>
+              <p style="width:100%;text-align:center; margin:11px;">Del la 3 edad</p>
+            </div>
+            <div class="cantidadDeBoletos centrar">
+                <p style="width:100%;text-align: center;font-size:20px;">CANTIDAD</p>
+                <div class="centrar" style="width:100%;">
+                  <button class="botones monocromatico centrar" style="width:20px;" @click="menosBoletos('A')">-</button> 
+                  <p class="monocromatico centrar" style="width:auto;background:transparent; color:white">{{boletosA}}</p> 
+                  <button class="botones monocromatico centrar" style="width:20px;" @click="masBoletos('A')">+</button>
+                </div>
+                <div class="centrar" style="width:100%;">
+                  <button class="botones monocromatico centrar" style="width:20px;"  @click="menosBoletos('N')">-</button>
+                   <p class="monocromatico centrar" style="width:auto;background:transparent; color:white">{{boletosN}}</p>
+                    <button class="botones monocromatico centrar" style="width:20px;" @click="masBoletos('N')">+</button>
+                </div>
+                <div class="centrar" style="width:100%;">
+                  <button class="botones monocromatico centrar" style="width:20px;"  @click="menosBoletos('M')">-</button>
+                   <p class="monocromatico centrar" style="width:auto;background:transparent; color:white">{{boletosM}}</p> 
+                   <button class="botones monocromatico centrar" style="width:20px;" @click="masBoletos('M')">+</button>
+                </div>
+            </div>
+            <div class="precios centrar">
+                <p style="width:100%;text-align: center;font-size:20px;">COSTO</p>
+                <p style="width:100%;text-align:center;margin:11px;">$50</p>
+                <p style="width:100%;text-align:center;margin:11px;">$25</p>
+                <p style="width:100%;text-align:center;margin:11px;">$35</p>
+            </div>
+          </div>
 
 
           <div class="barrabotones">
@@ -56,7 +96,7 @@
               Regresar
               </button>
               <button class="botones"
-              @click="irasuguiente()"
+              @click="irasuguiente(2,boletosCantidad)"
               >
               Siguiente
               </button>
@@ -67,8 +107,9 @@
      <div class="contenidoBara"
         v-show="estadoActual==3"
       >
-          <p>acientos</p>
+         
           <div class="indicaciones centrar">
+             <p style="width: 100%; text-align: center; color: gold;">Eliga sus acientos</p>
             <p style="width: 100%; text-align: center;">De click sobre un lugar disponible para selecionar, para cambiar lugar de click sobre un lugar apartado y escoja otro</p><br>
             <div class="asientos"></div>
             <p style="margin-right:5px;">disponible</p>
@@ -76,7 +117,7 @@
              <p style="margin-right:5px;">apartado</p>
             <div class="asientos ocupado"></div>
             <p style="margin-right:5px;">ocupado</p>
-            <p style="margin-left:80px;">Lugares aquiridos {{apartados}}/{{boletosCantidad}}</p>
+            <p style="margin-left:80px;  border-bottom:2px solid gold;">Lugares aquiridos {{apartados}}/{{boletosCantidad}}</p>
           </div>
           <div class="patalla centrar">
             pantalla
@@ -84,7 +125,7 @@
           <div class="Contasientos centrar">
         
               <div class="filas" v-for="fil in  asientos">
-                <p style="margin: 2px;">{{fil.filaP}}</p>
+                <p style="margin:7px;">{{fil.filaP}}</p>
                 
                 <div class="asientos centrar"
                   v-for="aciento in fil.sillas"
@@ -109,7 +150,7 @@
               Regresar
               </button>
               <button class="botones"
-              @click="irasuguiente()"
+              @click="irasuguiente(3,apartados)"
               >
               Siguiente
               </button>
@@ -131,11 +172,7 @@
               >
               Regresar
               </button>
-              <button class="botones"
-              @click="irasuguiente()"
-              >
-              Siguiente
-              </button>
+          
           </div>
       </div>
       
@@ -152,25 +189,45 @@ export default {
 
   data(){
     return{
-      items:[ {pocision:1,itemx:"Horario"},{pocision:2,itemx:"Boleto",},{pocision:3,itemx: "Aciento",},{pocision:4,itemx: "Pago",}],
+      items:[ {pocision:1,itemx:"Horario"},{pocision:2,itemx:"Boleto",},{pocision:3,itemx: "Acientos",},{pocision:4,itemx: "Pago",}],
       arryHorarios:["12:30pm","1:30pm","8:30pm","8:30am","12:48pm"],
-      estadoActual:3,
+      estadoActual:1,
       filas:["A","B","C","D","E","F","G","H"],
       numeroDeSillaPorFila:24,
       asientos:[],
       asientosOcupados:[],
-      boletosA:1,
-      boletosN:0,
-      boletosM:0,
-      boletosCantidad:3,
+      boletosA:0,constoA:50,
+      boletosN:0,constoN:25,
+      boletosM:0,constoM:35,
+      boletosCantidad:0,
       apartados:0,
-      lugaresComprados:[]
+      horaFuncion:0,
+      lugaresComprados:[],
+      monstoTotal:0
     }
   },
   methods:{
 
-      irasuguiente(){
-        if(this.estadoActual<4){
+      irasuguiente(origen, info){
+        let paso=false
+        if(origen==1){
+          this.horaFuncion=info
+          paso=true
+        }
+
+        if(origen==2){
+          if(info>0){
+            paso=true
+          }
+        }
+
+        if(origen==3){
+          if(info==this.boletosCantidad){
+             paso=true
+          }
+        }
+
+        if(this.estadoActual<4 && paso==true){
           this.estadoActual++
         }
         
@@ -244,12 +301,43 @@ export default {
             
           console.log(" this.lugaresComprados", this.lugaresComprados);
       },
+      masBoletos(tipo){
+        if(tipo=="A"){
+          this.boletosA++;
+        }
+        if(tipo=="N"){
+          this.boletosN++;
+        }
+        if(tipo=="M"){
+          this.boletosM++;
+        }
+
+        this.monstoTotal=(this.boletosM*this.constoM)+(this.boletosA*this.constoA)+(this.boletosN*this.constoN)
+        this.boletosCantidad=this.boletosM+this.boletosA+this.boletosN
+      },
+
+      menosBoletos(tipo){
+
+        if(tipo=="A" && this.boletosA>0){
+          this.boletosA--;
+        }
+        if(tipo=="N" && this.boletosN>0){
+          this.boletosN--;
+        }
+        if(tipo=="M" && this.boletosN>0){
+          this.boletosM--;
+        }
+
+        this.monstoTotal=(this.boletosM*this.constoM)+(this.boletosA*this.constoA)+(this.boletosN*this.constoN)
+        this.boletosCantidad=this.boletosM+this.boletosA+this.boletosN
+      }
 
 
 
   },
   created(){
    this.crearAcientos();
+   this.masBoletos('A');
   }
    
 }
@@ -317,7 +405,7 @@ export default {
 .contenidoBara{
   width: 100%;
   height: auto;
-  padding: 10px;
+
   background: #0d315c;
 }
 
@@ -338,6 +426,8 @@ export default {
 }
 .Contasientos{
   background: grey;
+  width: 98%;
+  margin: auto;
 }
 
 .filas{
@@ -379,11 +469,42 @@ export default {
   width: 100%;
 }
 
+.datos{
+  width: 70%;
+ 
+  padding: 5px;
+}
+label{
+  margin: 10px;
+  margin-top: 50px;
+  font-size: 19px;
+}
+
+.dinero{
+  background: #2F4F4F;
+  margin-top: 10px;
+  width: 170px;
+  padding: 8px;
+}
+
+.opboletos{
+  background: black;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.tiposDeBoleto,.precios,.cantidadDeBoletos{
+  width: 30%;
+  
+}
+
 @media(max-width: 990px){
 .cuadro{
   width: 90%;
 }
   
 }
+
+
 </style>
 
