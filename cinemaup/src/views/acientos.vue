@@ -24,7 +24,7 @@
           <p>Horario:</p>
 
           <div class="contHorarios">
-            <button 
+            <button class="monocromatico"
             style="padding:15px;"
             v-for="hora in arryHorarios"
             >{{hora}}</button>
@@ -69,12 +69,14 @@
       >
           <p>acientos</p>
           <div class="indicaciones centrar">
+            <p style="width: 100%; text-align: center;">De click sobre un lugar disponible para selecionar, para cambiar lugar de click sobre un lugar apartado y escoja otro</p><br>
             <div class="asientos"></div>
             <p style="margin-right:5px;">disponible</p>
             <div class="asientos apartado"></div>
              <p style="margin-right:5px;">apartado</p>
             <div class="asientos ocupado"></div>
             <p style="margin-right:5px;">ocupado</p>
+            <p style="margin-left:80px;">Lugares aquiridos {{apartados}}/{{boletosCantidad}}</p>
           </div>
           <div class="patalla centrar">
             pantalla
@@ -88,7 +90,7 @@
                   v-for="aciento in fil.sillas"
                   v-bind:id="aciento.id"
                   v-bind:class="{'ocupado' : aciento.status == true}"
-                  @click="getAciento(aciento.id)"
+                  @click="getAciento(aciento)"
                 >
                   <p>{{aciento.numero}}</p>
                 </div>
@@ -155,7 +157,14 @@ export default {
       estadoActual:3,
       filas:["A","B","C","D","E","F","G","H"],
       numeroDeSillaPorFila:24,
-      asientos:[]
+      asientos:[],
+      asientosOcupados:[],
+      boletosA:1,
+      boletosN:0,
+      boletosM:0,
+      boletosCantidad:3,
+      apartados:0,
+      lugaresComprados:[]
     }
   },
   methods:{
@@ -175,26 +184,69 @@ export default {
       crearAcientos(){
        let tem=[]
        let filasx=[]
+       let op=["A1","B8","H10","E15","E14","A24","D1"]
         for (let index = 0; index < this.filas.length; index++) {
              tem=[]
             for (let i = 0; i <this.numeroDeSillaPorFila; i++) {
                 let n=i+1
-                 let silla={fila:this.filas[index],numero:n,status:false,id:""+this.filas[index]+n}
-
+                let idA=""+this.filas[index]+n
+                let silla=null
+                if(op.includes(idA)){
+                    silla={fila:this.filas[index],numero:n,status:true,id:idA}
+                }else{
+                    silla={fila:this.filas[index],numero:n,status:false,id:idA}
+                }
                 tem.push(silla)
             }
             let filla={filaP:this.filas[index],sillas:tem}
             filasx.push(filla)
         }
         this.asientos=filasx
-        console.log("tem=\n", this.asientos);
         
       },
+     
+      getAciento(acineto){
+            let auc=[]
+            let ay=null
+            let pa=false
+            if(acineto.status==false){
+              console.log("valiodo");
+              this.lugaresComprados.forEach(element => {
+                    console.log("v ",element.id);
+                    if(element.id==acineto.id){
+                       pa=true
+                    }
+              });
 
-      getAciento(idAcineto){
-        console.log("Aciento= ",idAcineto);
-        document.getElementById(idAcineto).className="asientos apartado"
-      }
+              if(pa==true){
+                    this.lugaresComprados.forEach(element => {
+                      if(element.id!=acineto.id){
+                        auc.push(element)
+                      }
+                    });
+                  this.lugaresComprados=auc
+                  this.apartados--
+                  document.getElementById(acineto.id).className="asientos "
+              }else{
+                if(this.apartados<this.boletosCantidad){
+                    ay={id:acineto.id,asiento:acineto}
+                    this.lugaresComprados.push(ay)
+                    this.apartados++
+                    document.getElementById(acineto.id).className="asientos apartado"
+                }
+              }
+              
+
+
+            }else{
+              console.log("no valiodo");
+            }
+            
+          console.log(" this.lugaresComprados", this.lugaresComprados);
+      },
+
+
+
   },
   created(){
    this.crearAcientos();
@@ -222,7 +274,13 @@ export default {
     color: white;
    
 }
-
+.monocromatico{
+  background: white;
+  color: black;
+  margin: 5px;
+  width: 100px;
+  
+}
 .contimagen{
     height: 200px;
     width: 30%;
@@ -293,8 +351,8 @@ export default {
 .asientos{
   background: white;
   color: black;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   text-align: center;
   cursor: pointer;
   margin: 2px ;
@@ -304,7 +362,8 @@ export default {
 
 .patalla{
   background: black;
-  border: 1px solid white;
+
+  margin-bottom: 5px;
 }
 
 .ocupado{
@@ -318,6 +377,13 @@ export default {
 .indicaciones{
   padding: 5px;
   width: 100%;
+}
+
+@media(max-width: 990px){
+.cuadro{
+  width: 90%;
+}
+  
 }
 </style>
 
