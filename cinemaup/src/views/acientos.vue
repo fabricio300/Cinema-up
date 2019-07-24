@@ -4,7 +4,9 @@
 
 
         <div class="contimagen">
-            <p>pelicula</p>
+            <img style="width:100%; border:2px solid #2F4F4F" 
+            
+            src="https://www.elmulticine.com/imagenes/noticias/17/skull-island-cartel-simio-2.jpg" >
         </div>
 
     <div class="cuadro">
@@ -163,7 +165,9 @@
      <div class="contenidoBara"
         v-show="estadoActual==4"
       >
-          <p>4444</p>
+          <div class="pagos">
+            <p>dddddddddddddddd</p>
+          </div>
 
 
           <div class="barrabotones">
@@ -390,9 +394,9 @@ export default {
   
 }
 .contimagen{
-    height: 200px;
-    width: 30%;
-    background: white;
+    height: auto;
+    width: 25%;
+    background: transparent;
     color: black;
     margin: auto;
 }
@@ -424,6 +428,7 @@ export default {
 
 .contenidoBara{
   width: 100%;
+  min-height: 400px;
   height: auto;
 
   background: #0d315c;
@@ -517,11 +522,22 @@ label{
   width: 30%;
   
 }
+.pagos{
+  width: 100%;
+  background: black;
+  height: 80%;
+}
 
 @media(max-width: 990px){
 .cuadro{
   width: 90%;
 }
+
+.contimagen{
+    height: auto;
+    width: 50%;
+    
+    }
   
 }
 
