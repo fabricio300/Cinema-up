@@ -18,9 +18,11 @@
               v-bind:class="{'actual' : estadoActual == item.pocision}"
           >{{item.itemx}}</p>
       </div>
+
+      <div class="conteflec" id="flexcont"> 
  <!--------------------------------HORIOS ---------------------------------------------------->
       <div class="contenidoBara"
-        v-show="estadoActual==1"
+        
       >
           <p  style="margin:15px;">Pelicula: pelicula</p>
           <p style="margin:15px;">Genero: Genero</p>
@@ -40,12 +42,12 @@
 
 <!--------------------------------2 ---------------------------------------------------->
   
-       <div class="contenidoBara"
-        v-show="estadoActual==2"
+       <div class="contenidoBara centrar"
+       
       >
           
-          <div class="centrar">
-              <div class="datos">
+          <div class="centrar " style="width:100%">
+              <div class="datos" style="margin:10px;">
                 <label >Pelicula: pelicula</label> <br>
                 <label >Fecha: 04/07/2019</label><br>
                 <label >Funcion: {{horaFuncion}}</label><br>
@@ -62,7 +64,7 @@
               <p style="width:100%;text-align: center;font-size:20px;">TIPO</p>
               <p style="width:100%;text-align:center; margin:11px;">Adulto</p>
               <p style="width:100%;text-align:center; margin:11px;">Niño</p>
-              <p style="width:100%;text-align:center; margin:11px;">Del la 3 edad</p>
+              <p style="width:100%;text-align:center; margin:11px;">De la 3 edad</p>
             </div>
             <div class="cantidadDeBoletos centrar">
                 <p style="width:100%;text-align: center;font-size:20px;">CANTIDAD</p>
@@ -84,9 +86,9 @@
             </div>
             <div class="precios centrar">
                 <p style="width:100%;text-align: center;font-size:20px;">COSTO</p>
-                <p style="width:100%;text-align:center;margin:11px;">$50</p>
-                <p style="width:100%;text-align:center;margin:11px;">$25</p>
-                <p style="width:100%;text-align:center;margin:11px;">$35</p>
+                <p style="width:100%;text-align:center;margin:11px;">${{constoA}}</p>
+                <p style="width:100%;text-align:center;margin:11px;">${{constoN}}</p>
+                <p style="width:100%;text-align:center;margin:11px;">${{constoM}}</p>
             </div>
           </div>
 
@@ -107,11 +109,11 @@
 
 <!--------------------------------3 ---------------------------------------------------->
      <div class="contenidoBara"
-        v-show="estadoActual==3"
+       
       >
          
           <div class="indicaciones centrar">
-             <p style="width: 100%; text-align: center; color: gold;">Eliga sus acientos</p>
+             <p style="width: 100%; text-align: center; color: gold;">Eliga sus asientos</p>
             <p style="width: 100%; text-align: center;">De click sobre un lugar disponible para selecionar, para cambiar lugar de click sobre un lugar apartado y escoja otro</p><br>
             <div class="asientos"></div>
             <p style="margin-right:5px;">disponible</p>
@@ -119,14 +121,14 @@
              <p style="margin-right:5px;">apartado</p>
             <div class="asientos ocupado"></div>
             <p style="margin-right:5px;">ocupado</p>
-            <p style="margin-left:80px;  border-bottom:2px solid gold;">Lugares aquiridos {{apartados}}/{{boletosCantidad}}</p>
+            <p style="margin-left:80px;  border-bottom:2px solid gold;">Lugares adquiridos {{apartados}}/{{boletosCantidad}}</p>
           </div>
           <div class="patalla centrar">
             pantalla
           </div>
           <div class="Contasientos centrar">
         
-              <div class="filas" v-for="fil in  asientos">
+              <div class="filas centrar"  v-for="fil in  asientos">
                 <p style="margin:7px;">{{fil.filaP}}</p>
                 
                 <div class="asientos centrar"
@@ -163,7 +165,7 @@
     
 <!--------------------------------4 ---------------------------------------------------->
      <div class="contenidoBara"
-        v-show="estadoActual==4"
+        
       >
           <div class="pagos">
             <p>dddddddddddddddd</p>
@@ -179,7 +181,7 @@
           
           </div>
       </div>
-      
+      </div>
       
     </div>
 
@@ -193,7 +195,7 @@ export default {
 
   data(){
     return{
-      items:[ {pocision:1,itemx:"Horario"},{pocision:2,itemx:"Boleto",},{pocision:3,itemx: "Acientos",},{pocision:4,itemx: "Pago",}],
+      items:[ {pocision:1,itemx:"Horario"},{pocision:2,itemx:"Boleto",},{pocision:3,itemx: "Asientos",},{pocision:4,itemx: "Pago",}],
       arryHorarios:["12:30pm","1:30pm","8:30pm","8:30am","12:48pm"],
       estadoActual:1,
       filas:["A","B","C","D","E","F","G","H"],
@@ -207,7 +209,8 @@ export default {
       apartados:0,
       horaFuncion:0,
       lugaresComprados:[],
-      monstoTotal:0
+      monstoTotal:0,
+      margen:0
     }
   },
   methods:{
@@ -253,6 +256,8 @@ export default {
 
         if(this.estadoActual<4 && paso==true){
           this.estadoActual++
+          this.margen=(this.estadoActual-1)*100
+          document.getElementById('flexcont').setAttribute("style",'margin-left:-'+this.margen+'%;')
         }
         
       },
@@ -260,6 +265,9 @@ export default {
       regresar(){
         if(this.estadoActual>1){
           this.estadoActual--
+          this.margen=this.margen-100
+          document.getElementById('flexcont').setAttribute("style",'margin-left:-'+this.margen+'%;')
+        
         }
       },
       crearAcientos(){
@@ -348,7 +356,7 @@ export default {
         if(tipo=="N" && this.boletosN>0){
           this.boletosN--;
         }
-        if(tipo=="M" && this.boletosN>0){
+        if(tipo=="M" && this.boletosM>0){
           this.boletosM--;
         }
 
@@ -427,22 +435,29 @@ export default {
 }
 
 .contenidoBara{
-  width: 100%;
+  width: 25%;
   min-height: 400px;
   height: auto;
-
+  position: relative;
   background: #0d315c;
+  position: relative;
 }
 
 .barrabotones{
-  
+  position: absolute;
+  bottom: 0px;
   width: 100%;
+  padding: 2px;
+ justify-content:flex-end;
+  
 }
 .botones{
-  padding: 7px;
+  padding: 5px;
   font-size: 13px;
   cursor: pointer;
   outline: none;
+  border: 1px solid white;
+  margin: 2px;
 }
 
 .contHorarios{
@@ -453,21 +468,22 @@ export default {
   background: grey;
   width: 98%;
   margin: auto;
+  margin-bottom: 40px;
 }
 
 .filas{
   
   display: flex;
   width: 100%;
-  padding: 4px;
+  padding: 2px;
   
 }
 
 .asientos{
   background: white;
   color: black;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   text-align: center;
   cursor: pointer;
   margin: 2px ;
@@ -495,8 +511,8 @@ export default {
 }
 
 .datos{
-  width: 70%;
- 
+  width: 60%;
+  
   padding: 5px;
 }
 label{
@@ -514,8 +530,9 @@ label{
 
 .opboletos{
   background: black;
+  width: 100%;
   padding: 15px;
-  margin-top: 10px;
+  margin-bottom:20px;
 }
 
 .tiposDeBoleto,.precios,.cantidadDeBoletos{
@@ -526,6 +543,12 @@ label{
   width: 100%;
   background: black;
   height: 80%;
+}
+.conteflec{
+  display: flex;
+  width: 400%;
+  transition: 0.5s;
+ 
 }
 
 @media(max-width: 990px){
@@ -543,6 +566,10 @@ label{
   width: 20px;
   height: 20px;
   
+  }
+
+  .datos{
+    text-align: center;
   }
 }
 
