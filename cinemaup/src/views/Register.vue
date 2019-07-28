@@ -63,7 +63,7 @@
 </template>
 
 <script lang="js">
-import axios from "axios";
+//import axios from "axios";
 export default  {
   data() {
     return{
@@ -92,7 +92,7 @@ export default  {
   },
   methods:{
       signup(name, email, password, passwordConfirm) {
-          this.error = false;
+         /* this.error = false;
         let api = "http://127.0.0.1:3333/api/v1"
           axios.post(api + "/signup",{
             username:name,
@@ -113,7 +113,7 @@ export default  {
             console.log(err);
             console.log(err.status);
             console.log(err);
-          });
+          });*/
       },
     },
 };

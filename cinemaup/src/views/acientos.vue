@@ -14,13 +14,8 @@
       <div class="barraItems centrar">
           <p class="item"
               
-<<<<<<< HEAD
-              v-for="item in items " :key=item
-              v-bind:class="{'actual' : estadoActual == item.pocision}"
-=======
               v-for="item in items"
               v-bind:class="{'actual' : estadoActual == item.pocision}" v-bind:key="item"
->>>>>>> 43231a4cfa3cda39cc89219781e10924e1f633c1
           >{{item.itemx}}</p>
       </div>
 
@@ -37,13 +32,8 @@
           <div class="contHorarios">
             <button class="monocromatico"
             style="padding:15px;"
-<<<<<<< HEAD
-            v-for="hora in arryHorarios" :key="hora"
-            @click="irasuguiente( 1, hora)"
-=======
             v-for="hora in arryHorarios"
             @click="irasuguiente( 1, hora)" v-bind:key="hora"
->>>>>>> 43231a4cfa3cda39cc89219781e10924e1f633c1
             >{{hora}}</button>
           </div>
 
@@ -145,7 +135,7 @@
                   v-for="aciento in fil.sillas" :key="aciento"
                   v-bind:id="aciento.id"
                   v-bind:class="{'ocupado' : aciento.status == true}"
-                  @click="getAciento(aciento)" v-bind :key="aciento"
+                  @click="getAciento(aciento)" 
                 >
                   <p>{{aciento.numero}}</p>
                 </div>
@@ -177,65 +167,74 @@
      <div class="contenidoBara"
         
       >
-          <div class="pagos " >
-            <p>dddddddddddddddd</p>
-            <div id="app" class="centrar">
+          <div class="pagos centrar" >
+          
+            <div id="app" class="centrar" >
 
-                <div class="">
+                <div class="indicaciones centrar" style="background: #0d315c;">
 
-                  <form class="uk-padding">
+                  <form class="indicaciones centrar">
 
-                    <div class="uk-margin uk-text-center">
-                      <p class="stripeError" v-if="stripeError">
-                        {{stripeError}}
-                      </p>
-                    </div>
-
-
-                    <div class="uk-margin uk-text-left">
-                      <label class="uk-form-label" for="Card Number">
+                    
+                    <div class="indicaciones centrar" >
+                      
+                      <label  style="width:100%;  text-align:center; color:white;" for="Card Number">
                         muero de tarjeta
                       </label>
-                      <div class="uk-form-controls">
-                        <div id="card-number" class="uk-input" :class="{ 'uk-form-danger': cardNumberError }"></div>
-                        <span class="help-block" v-if="cardNumberError">
+                      <p class="stripeError" style="font-size:15px; color:gold;" v-if="stripeError">
+                        {{stripeError}}
+                      </p>
+                      <div class="centrar" style="width:100%; ">
+                        <div  style="border:1px solid white; width:300px; background: white;"  :class="{ 'uk-form-danger': cardNumberError }">
+                            <p id="card-number"  style=" font-size: 30px; color:blue; padding-top: 5px;">
+                        
+                            </p>
+                        </div>
+                        <span  style="width:100%;  text-align:center; color:gold; font-size: 15px;" v-if="cardNumberError">
                                           {{cardNumberError}}
                         </span>
+
+                        
                       </div>
                     </div>
 
-                    <div class="uk-grid-small uk-text-left" uk-grid>
-                      <div class="uk-width-1-2@s">
-                        <label class="uk-form-label" for="Card CVC">
+                    <div class="centrar" style=" " uk-grid>
+                      <div class="centrar" style="width:150px; margin:10px;">
+                        <label style="color:white; " for="Card CVC">
                            CVC
                         </label>
-                        <div class="uk-form-controls">
-                          <div id="card-cvc" class="uk-input" :class="{ 'uk-form-danger': cardCvcError }"></div>
-                          <span class="help-block" v-if="cardCvcError">
+                        <div style=" width:150px;">
+                          <div  style=" background: white; font-size: 30px; border:1px solid white; padding-top: 5px;">
+                                <p id="card-cvc"></p>
+
+                          </div>
+                          <span style="width:100%;  text-align:center; color:gold; font-size: 15px;" v-if="cardCvcError">
                                               {{cardCvcError}}
                                           </span>
                         </div>
                       </div>
-                      <div class="uk-width-1-2@s">
-                        <label class="uk-form-label" for="Expiry Month">
+                      <div class="centrar"  style=" width:150px; margin:10px;">
+                        <label style="color:white;" for="Expiry Month">
                           Expiry
                         </label>
-                        <div class="uk-form-controls">
-                          <div id="card-expiry" class="uk-input" :class="{ 'uk-form-danger': cardExpiryError }"></div>
-                          <span class="help-block" v-if="cardExpiryError">
+                        <div style="width:150px; ">
+                          <div  style="background: white; font-size: 30px; border:1px solid white; padding-top: 5px;">
+                            <p id="card-expiry"></p>
+                          </div>
+                          <span style="width:100%;  text-align:center; color:gold; font-size: 15px;" v-if="cardExpiryError">
                                               {{cardExpiryError}}
                                           </span>
                         </div>
                       </div>
                     </div>
 
-                    <div class="uk-margin uk-margin-remove-bottom uk-text-right">
-                      <button class="uk-button uk-button-small uk-button-default" @click.prevent="reset()">
-                        reset
+                    <div class="centrar" style="width:100%; margin:10px;">
+                      <button class="botones" style="width:110px; background: #8B0000; color:white;" @click.prevent="reset()">
+                        Borrar
                       </button>
 
-                      <button class="uk-button uk-button-small uk-button-primary" @click.prevent="submitFormToCreateToken()">
-                        Donate $1200
+                      <button class="botones" style="width:110px; background: #228B22; color:white;" @click.prevent="submitFormToCreateToken()">
+                        Pagar 
                       </button>
                     </div>
 
@@ -540,6 +539,7 @@ export default {
             } else {
               const token = result.token.id
               alert('Thanks for donating.')
+              console.log("token generado=",token)
                 //send the token to your server
                 //clear the inputs
             }
@@ -608,6 +608,7 @@ export default {
     background: transparent;
     color: black;
     margin: auto;
+  
 }
 
 .cuadro{
@@ -742,7 +743,7 @@ label{
 }
 .pagos{
   width: 100%;
-  background: white;
+  
   height: 80%;
   color: black
 }

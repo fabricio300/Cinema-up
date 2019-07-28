@@ -52,8 +52,8 @@
 
 </template>
 
-<script lang="js">
-import axios from "axios";
+<script>
+//import axios from "axios";
 export default  {
   data() {
     return{
@@ -79,8 +79,8 @@ export default  {
   methods:{
       Login(email, password) {
   
-
-        let api = "http://127.0.0.1:3333/api/v1"
+            
+       /* let api = "http://127.0.0.1:3333/api/v1"
           axios.post(api + "/login",{
             email: email,
             password: password, 
@@ -97,7 +97,7 @@ export default  {
               //this.error=true;
               //this.errorMesage="Usuario o contraseña incorrectos"
             
-            });
+            });*/
         
       },
     },
