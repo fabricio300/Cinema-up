@@ -132,10 +132,10 @@
                 <p style="margin:7px;">{{fil.filaP}}</p>
                 
                 <div class="asientos centrar"
-                  v-for="aciento in fil.sillas"
+                  v-for="aciento in fil.sillas" :key="aciento"
                   v-bind:id="aciento.id"
                   v-bind:class="{'ocupado' : aciento.status == true}"
-                  @click="getAciento(aciento)" v-bind:key="aciento"
+                  @click="getAciento(aciento)" 
                 >
                   <p>{{aciento.numero}}</p>
                 </div>
@@ -167,8 +167,81 @@
      <div class="contenidoBara"
         
       >
-          <div class="pagos">
-            <p>dddddddddddddddd</p>
+          <div class="pagos centrar" >
+          
+            <div id="app" class="centrar"  >
+
+                <div class="indicaciones centrar" style="background: #2F4F4F; width:80%; border-radius:10px;">
+
+                  <form class="indicaciones centrar">
+
+                    
+                    <div class="indicaciones centrar" >
+                      
+                      <label  style="width:100%;  text-align:center; color:white;" for="Card Number">
+                        muero de tarjeta
+                      </label>
+                      <p class="stripeError" style="font-size:15px; color:gold;" v-if="stripeError">
+                        {{stripeError}}
+                      </p>
+                      <div class="centrar" style="width:100%; ">
+                        <div  style="border:1px solid white; width:300px; background: white;"  :class="{ 'uk-form-danger': cardNumberError }">
+                            <p id="card-number"  style=" font-size: 30px; color:blue; padding-top: 5px;">
+                        
+                            </p>
+                        </div>
+                        <span  style="width:100%;  text-align:center; color:gold; font-size: 15px;" v-if="cardNumberError">
+                                          {{cardNumberError}}
+                        </span>
+
+                        
+                      </div>
+                    </div>
+
+                    <div class="centrar" style=" " uk-grid>
+                      <div class="centrar" style="width:150px; margin:10px;">
+                        <label style="color:white; " for="Card CVC">
+                           CVC
+                        </label>
+                        <div style=" width:150px;">
+                          <div  style=" background: white; font-size: 30px; border:1px solid white; padding-top: 5px;">
+                                <p id="card-cvc"></p>
+
+                          </div>
+                          <span style="width:100%;  text-align:center; color:gold; font-size: 15px;" v-if="cardCvcError">
+                                              {{cardCvcError}}
+                                          </span>
+                        </div>
+                      </div>
+                      <div class="centrar"  style=" width:150px; margin:10px;">
+                        <label style="color:white;" for="Expiry Month">
+                          Expiry
+                        </label>
+                        <div style="width:150px; ">
+                          <div  style="background: white; font-size: 30px; border:1px solid white; padding-top: 5px;">
+                            <p id="card-expiry"></p>
+                          </div>
+                          <span style="width:100%;  text-align:center; color:gold; font-size: 15px;" v-if="cardExpiryError">
+                                              {{cardExpiryError}}
+                                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="centrar" style="width:100%; margin:10px;">
+                      <button class="botones" style="width:110px; background: #8B0000; color:white;" @click.prevent="reset()">
+                        Borrar
+                      </button>
+
+                      <button class="botones" style="width:110px; background: #228B22; color:white;" @click.prevent="submitFormToCreateToken()">
+                        Pagar 
+                      </button>
+                    </div>
+
+                  </form>
+                </div>
+
+              </div>
           </div>
 
 
@@ -210,8 +283,30 @@ export default {
       horaFuncion:0,
       lugaresComprados:[],
       monstoTotal:0,
-      margen:0
+      margen:0,
+      card: {
+      cvc: '',
+      number: '',
+      expiry: ''
+    },
+
+    //elements
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvc: '',
+    stripe: null,
+
+    // errors
+    stripeError: '',
+    cardCvcError: '',
+    cardExpiryError: '',
+    cardNumberError: '',
+
+    loading: false,
     }
+  },
+   mounted() {
+    this.setUpStripe();
   },
   methods:{
       resetear(){
@@ -362,7 +457,113 @@ export default {
 
         this.monstoTotal=(this.boletosM*this.constoM)+(this.boletosA*this.constoA)+(this.boletosN*this.constoN)
         this.boletosCantidad=this.boletosM+this.boletosA+this.boletosN
-      }
+      },
+      setUpStripe() {
+        if (window.Stripe === undefined) {
+          alert('Stripe V3 library not loaded!');
+        } else {
+          const stripe = window.Stripe('pk_test_ZPLpOD2JNsUdDiIvNvrP4aTy00eJZAORv6');
+          this.stripe = stripe;
+
+          const elements = stripe.elements();
+          this.cardCvc = elements.create('cardCvc');
+          this.cardExpiry = elements.create('cardExpiry');
+          this.cardNumber = elements.create('cardNumber');
+
+          this.cardCvc.mount('#card-cvc');
+          this.cardExpiry.mount('#card-expiry');
+          this.cardNumber.mount('#card-number');
+
+          this.listenForErrors();
+        }
+      },
+
+      listenForErrors() {
+        const vm = this;
+
+        this.cardNumber.addEventListener('change', (event) => {
+          vm.toggleError(event);
+          vm.cardNumberError = ''
+          vm.card.number = event.complete ? true : false
+        });
+				
+        this.cardExpiry.addEventListener('change', (event) => {
+          vm.toggleError(event);
+          vm.cardExpiryError = ''
+          vm.card.expiry = event.complete ? true : false
+        });
+        
+				this.cardCvc.addEventListener('change', (event) => {
+          vm.toggleError(event);
+          vm.cardCvcError = ''
+          vm.card.cvc = event.complete ? true : false
+        });
+      },
+
+      toggleError (event) {
+        if (event.error) {
+          this.stripeError = event.error.message;
+        } else {
+          this.stripeError = '';
+        }
+      },
+
+      submitFormToCreateToken() {
+        this.clearCardErrors();
+        let valid = true;
+
+        if (!this.card.number) {
+          valid = false;
+          this.cardNumberError = "Card Number is Required";
+        }
+        if (!this.card.cvc) {
+          valid = false;
+          this.cardCvcError = "CVC is Required";
+        }
+        if (!this.card.expiry) {
+          valid = false;
+          this.cardExpiryError = "Month is Required";
+        }
+        if (this.stripeError) {
+          valid = false;
+        }
+        if (valid) {
+          this.createToken()
+        }
+      },
+
+      createToken() {
+        this.stripe.createToken(this.cardNumber).then((result) => {
+            if (result.error) {
+              this.stripeError = result.error.message;
+            } else {
+              const token = result.token.id
+              alert('Thanks for donating.')
+              console.log("token generado=",token)
+                //send the token to your server
+                //clear the inputs
+            }
+          })
+      },
+
+      clearElementsInputs() {
+        this.cardCvc.clear()
+        this.cardExpiry.clear()
+        this.cardNumber.clear()
+      },
+
+      clearCardErrors() {
+        this.stripeError = ''
+        this.cardCvcError = ''
+        this.cardExpiryError = ''
+        this.cardNumberError = ''
+      },
+			
+			reset() {
+				this.clearElementsInputs()
+				this.clearCardErrors()
+			}
+  
 
 
 
@@ -407,6 +608,7 @@ export default {
     background: transparent;
     color: black;
     margin: auto;
+  
 }
 
 .cuadro{
@@ -541,9 +743,11 @@ label{
 }
 .pagos{
   width: 100%;
-  background: black;
+  
   height: 80%;
+  color: black
 }
+
 .conteflec{
   display: flex;
   width: 400%;
