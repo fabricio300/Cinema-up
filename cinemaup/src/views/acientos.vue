@@ -15,7 +15,7 @@
           <p class="item"
               
               v-for="item in items"
-              v-bind:class="{'actual' : estadoActual == item.pocision}"
+              v-bind:class="{'actual' : estadoActual == item.pocision}" v-bind:key="item"
           >{{item.itemx}}</p>
       </div>
 
@@ -33,7 +33,7 @@
             <button class="monocromatico"
             style="padding:15px;"
             v-for="hora in arryHorarios"
-            @click="irasuguiente( 1, hora)"
+            @click="irasuguiente( 1, hora)" v-bind:key="hora"
             >{{hora}}</button>
           </div>
 
@@ -128,14 +128,14 @@
           </div>
           <div class="Contasientos centrar">
         
-              <div class="filas centrar"  v-for="fil in  asientos">
+              <div class="filas centrar"  v-for="fil in  asientos" v-bind:key="fil">
                 <p style="margin:7px;">{{fil.filaP}}</p>
                 
                 <div class="asientos centrar"
                   v-for="aciento in fil.sillas"
                   v-bind:id="aciento.id"
                   v-bind:class="{'ocupado' : aciento.status == true}"
-                  @click="getAciento(aciento)"
+                  @click="getAciento(aciento)" v-bind:key="aciento"
                 >
                   <p>{{aciento.numero}}</p>
                 </div>
