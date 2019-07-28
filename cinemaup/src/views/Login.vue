@@ -90,7 +90,7 @@ export default  {
               localStorage.setItem("email",response.data.user.email)
               localStorage.setItem("id",response.data.user.id)
               this.$store.state.login=true;
-              this.$router.push({ path: 'Perfil' })
+              this.$router.push({ path: '' })
           }).catch(function (error2) {
               //esta parte es de control de errores hay que modificar el valor del 
               //error a true para que se muestren no obstante no se como cambiarlo por eso quedo asi 
