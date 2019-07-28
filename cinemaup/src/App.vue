@@ -1,9 +1,8 @@
-<template>
-  <v-app>
-    <v-toolbar app>
+<template >
+  <v-app style="background: #011526;">
+    <v-toolbar app style="background: #024873;" >
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span class="white--text">CinemaUP</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -11,7 +10,7 @@
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
         target="_blank"
       >
-        <span class="mr-2">Latest Release</span>
+        <span class="mr-2 white--text">Latest Release</span>
       </v-btn>
     </v-toolbar>
 
