@@ -17,5 +17,12 @@
 const Route = use('Route')
 
 Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
+    return { greeting: 'Hello world in JSON' }
 })
+Route.group(() => {
+    Route.post('Boletos', 'BoletoController.addNewBoleto')
+    Route.get('Boletos', 'BoletoController.getAllBoletos')
+    Route.get('Boletos/:id', 'BoletoController.getBoletoByID')
+    Route.get('BoletosByPelicula/:id', 'BoletoController.getBoletoByIDPeliculas')
+    Route.get('BoletosBySala/:id', 'BoletoController.getBoletoByIDSala')
+}).prefix('api/v1')
