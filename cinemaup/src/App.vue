@@ -2,16 +2,33 @@
   <v-app style="background: #011526;">
     <v-toolbar app style="background: #024873;" >
       <v-toolbar-title class="headline text-uppercase">
-        <span class="white--text">CinemaUP</span>
+        <span ><a href="/"  class="white--text" style="text-decoration: none;" >CinemaUP</a></span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+        <v-flex xs12 sm6 class="ml-3" >
+          <v-text-field
+            label="Busca tu pelicula"
+            single-line
+            color="#96B3D9"
+          ></v-text-field>
+        </v-flex>
+
       <v-btn
         flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href=""
         target="_blank"
       >
-        <span class="mr-2 white--text">Latest Release</span>
+        <span class="mr-2 white--text">Iniciar Sesión</span>
+      </v-btn>  
+
+      <v-btn
+          text
+           href="VIP"
+          color="orange"
+      >
+        VIP
       </v-btn>
+
     </v-toolbar>
 
     <v-content>
@@ -36,3 +53,4 @@ export default {
   }
 }
 </script>
+
