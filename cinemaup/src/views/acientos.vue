@@ -169,9 +169,9 @@
       >
           <div class="pagos centrar" >
           
-            <div id="app" class="centrar" >
+            <div id="app" class="centrar"  >
 
-                <div class="indicaciones centrar" style="background: #0d315c;">
+                <div class="indicaciones centrar" style="background: #2F4F4F; width:80%; border-radius:10px;">
 
                   <form class="indicaciones centrar">
 
