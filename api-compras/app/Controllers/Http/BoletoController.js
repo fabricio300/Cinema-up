@@ -12,17 +12,12 @@ class BoletoController {
 
         return response.json(boleto)
     }
-    async getBoletoByIDPeliculas({ params, response }) {
-        const boleto = await Boleto.findBy('idPelicula', params.id)
-
-        return response.json(boleto)
-    }
-    async getBoletoByIDSala({ params, response }) {
-        const boleto = await Boleto.findBy('IDSala', params.id)
+    async getBoletoByIDCartelera({ params, response }) {
+        const boleto = await Boleto.findBy('idCartelera', params.id)
         return response.json(boleto)
     }
     async addNewBoleto({ request, response }) {
-        const boletoInfo = request.only(['idPelicula', 'IDSala', 'JSON', 'cantidadBoletos'])
+        const boletoInfo = request.only(['idCartelera', 'JSON', 'token', 'cantidadBoletos'])
 
         const boleto = new Boleto()
         boleto.idPelicula = boletoInfo.idPelicula

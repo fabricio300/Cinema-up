@@ -23,6 +23,5 @@ Route.group(() => {
     Route.post('Boletos', 'BoletoController.addNewBoleto')
     Route.get('Boletos', 'BoletoController.getAllBoletos')
     Route.get('Boletos/:id', 'BoletoController.getBoletoByID')
-    Route.get('BoletosByPelicula/:id', 'BoletoController.getBoletoByIDPeliculas')
-    Route.get('BoletosBySala/:id', 'BoletoController.getBoletoByIDSala')
+    Route.get('BoletosByCartelera/:id', 'BoletoController.getBoletoByIDCartelera')
 }).prefix('api/v1')

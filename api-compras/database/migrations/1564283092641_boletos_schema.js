@@ -6,12 +6,12 @@ const Schema = use('Schema')
 class BoletosSchema extends Schema {
     up() {
         this.create('boletos', (table) => {
-            // table.increments()
-            table.integer('idPelicula').nullable()
-            table.integer('IDSala').nullable()
+            table.increments()
+            table.integer('idCartelera').nullable()
             table.string('JSON').nullable()
+            table.string('token').nullable()
             table.integer('cantidadBoletos').nullable()
-                // table.timestamps()
+            table.timestamps()
         })
     }
 
