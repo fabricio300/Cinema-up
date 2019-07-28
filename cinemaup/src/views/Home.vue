@@ -30,7 +30,6 @@
                 width="300"
                 v-for="(poster,i) in posters"
                 :key="i"
-                style="backgroung-color:#024873"
             >
                 <v-img
                     class="white--text"
