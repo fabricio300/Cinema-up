@@ -91,7 +91,7 @@
             },
             {
                 src: 'https://images-na.ssl-images-amazon.com/images/I/5171TL-zJGL.jpg',
-                name: 'El viaje de chihiro',
+                name: 'La princesa mononoke',
             },
             {
                 src: 'https://img.moviepostershop.com/your-name-movie-poster-2016-1010777234.jpg',
@@ -100,22 +100,6 @@
             {
                 src: 'http://es.web.img3.acsta.net/r_1280_720/medias/nmedia/18/70/26/56/20078341.jpg',
                 name: 'El viaje de chihiro',
-            },
-                        {
-                src: 'https://wallpaperaccess.com/full/977357.jpg',
-                name: 'Godzilla, El rey de los monstruos',
-            },
-            {
-                src: 'https://i.pinimg.com/originals/ad/a6/49/ada649c4e834b3af044a13b407947af7.jpg',
-                name: 'Una menta brillante',
-            },
-            {
-                src: 'https://images-na.ssl-images-amazon.com/images/I/71HCwLMPJVL._SY679_.jpg',
-                name: 'Logan',
-            },
-            {
-                src: 'http://cdn.collider.com/wp-content/uploads/2018/03/avengers-infinity-war-poster.jpg',
-                name: 'Avengers, Infinity War',
             }
         ]
       }
