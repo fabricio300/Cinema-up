@@ -1,13 +1,14 @@
 <template>
     <div class="contall centrar">
     
-
-
-        <div class="contimagen">
-            <img style="width:100%; border:2px solid #2F4F4F" 
-            
-            src="https://www.elmulticine.com/imagenes/noticias/17/skull-island-cartel-simio-2.jpg" >
-        </div>
+        <v-img
+           src="https://www.elmulticine.com/imagenes/noticias/17/skull-island-cartel-simio-2.jpg"
+          lazy-src="https://picsum.photos/id/11/10/6"
+          aspect-ratio="1"
+          class="grey lighten-2"
+          width="500"
+          height="300"
+        ></v-img>
 
     <div class="cuadro">
 
@@ -604,7 +605,7 @@ export default {
 }
 .contimagen{
     height: auto;
-    width: 25%;
+    width: 500px;
     background: transparent;
     color: black;
     margin: auto;
