@@ -63,13 +63,6 @@ export default  {
         password:null,
         error:false,
         errorMesage:"",
-        colors: [
-            'primary',
-            'secondary',
-            'yellow darken-2',
-            'red',
-            'orange',
-        ],
         model: 0,
         showArrows: false,
         hideDelimiters: true,
@@ -80,20 +73,19 @@ export default  {
   methods:{
       Login(email, password) {
         this.error=false;    
-        let api = "http://127.0.0.1:3333/api/v1"
-          axios.post(api + "/login",{
-            email: email,
-            password: password, 
-          }).then((response) => {
-              localStorage.setItem("username",response.data.user.username)
-              localStorage.setItem("email",response.data.user.email)
-              localStorage.setItem("id",response.data.user.id)
-              this.$store.state.login=true;
-              this.$router.push({ path: '' })
+        let api = "https://api-usuarios-cinenaup.herokuapp.com/api/usuarios"
+          axios.get(api).then((response) => {
+              console.log(response.data.length)    
+              response.data.forEach(element => {
+                console.log("soy elemento " +element)    
+              });
+            //   localStorage.setItem("username",response.data.user.username)
+            //   localStorage.setItem("email",response.data.user.email)
+            //   this.$store.state.login=true;
+            //   this.$router.push({ path: '' })
           }).catch(function (error2) {
               //esta parte es de control de errores hay que modificar el valor del 
               //error a true para que se muestren no obstante no se como cambiarlo por eso quedo asi 
-              this.error=true;
               this.errorMesage="Usuario o contraseña incorrectos"
             
             });

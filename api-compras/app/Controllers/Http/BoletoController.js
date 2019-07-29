@@ -1,6 +1,6 @@
 'use strict'
 const Boleto = use('App/Models/Boleto')
-
+const stripe = require('stripe')('sk_test_WPxp1ZDJ23xC0gywfy6S3fgZ00421Q9xmz');
 class BoletoController {
     async getAllBoletos({ response }) {
         let boleto = await Boleto.all()
@@ -24,6 +24,21 @@ class BoletoController {
         boleto.JSON = boletoInfo.JSON
         boleto.token = boletoInfo.token
         boleto.cantidadBoletos = boletoInfo.cantidadBoletos
+        console.log(boleto)
+        const token = boletoInfo.token;
+        try {
+            (async() => {
+                const charge = await stripe.charges.create({
+                    amount: parseFloat(boleto.cantidadBoletos),
+                    currency: 'usd',
+                    description: "Compra boletos",
+                    source: token,
+                });
+            })();
+        } catch (error) {
+            console.error(error)
+        }
+
 
         await boleto.save()
 
