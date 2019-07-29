@@ -15,36 +15,37 @@
 
         
       <v-btn
-        v-if="this.$store.state.login==false"
+        v-if="this.$store.state.login==false && login==null "
         flat
         text
         class="white--text"
-        href="Login"
+        :to="{name:'Login'}"
       >
         Iniciar Sesión
       </v-btn>
       <v-btn
-        v-if="this.$store.state.login==false"
+        v-if="this.$store.state.login==false && login==null "
           text
-           href="VIP"
+           :to="{name:'VIP'}"
           color="orange"
       >
         VIP
       </v-btn>
       <v-btn
-        v-if="this.$store.state.login==true"
+        v-if="this.$store.state.login==true || login=='true'"
           text
           color="orange"
+          v-on:click="cerrarSesion()"
       >
         Cerrar sesion
       </v-btn>
     </v-toolbar>
 
-    <v-content>
-    
-        <router-view/>
+      <v-content>
+      <router-view></router-view>
     </v-content>
   </v-app>
+  
 </template>
 
 <script>
@@ -57,7 +58,13 @@ export default {
   },
   data () {
     return {
-      //
+      login: localStorage.getItem("login")
+    }
+  },
+  methods:{
+    cerrarSesion(){
+      localStorage.clear()
+      this.$router.push({ path: 'Login' })
     }
   }
 }

@@ -73,38 +73,45 @@ let stripe = Stripe(`pk_test_AjSflyejK3J7quTKNeWfBY0v00XIuUpWtP`),
             },
         methods:{
             registrar(password, password2, name ,email ,status){
-                // this.error=false;
-                // if(name == "" ||name == null  ){
-                //     this.error=true;
-                //     this.errorMesage="nombre"
-                // }
-                // if(password != password2 ){
-                //     this.error=true;
-                //     this.errorMesage="Las contraseñas no son iguales"
-                // }
-                // if(email == "" ||email == null  ){
-                //     this.error=true;
-                //     this.errorMesage="Correo vacio o invalid "
-                // }
-                
+            
                 if(true){
                     stripe.createToken(card).then(function(result) {
                     console.log(result.token.id)
+
+
                     axios.post("https://api-usuarios-cinenaup.herokuapp.com/api/usuarios", {
                                         nombre:name,
                                         password:password,
                                         correo:email,
-                                        status:status
+                                        status:status  
+                                    }).then(function (response) {
                                         
+                                    axios.post("https://api-usuarios-cinenaup.herokuapp.com/api/usuarios/pay", {
+                                        token:result.token.id,
+                                        monto:10,
+                                          
                                     }).then(function (response) {
                                         console.log(response);
                                         this.$store.state.login=true;
-                                        this.$router.push({ path: '' })
+                                        localStorage.setItem("login","true")
+                                        this.$router.push({ path: '/' })
                                         
                                     }).catch(function (error2) {
                                         console.log(error2)
                                         this.errorMesage="Hubo un error intenta mas tarde"
                                     });
+
+
+                                        
+                                    }).catch(function (error2) {
+                                        console.log(error2)
+                                        this.errorMesage="Hubo un error intenta mas tarde"
+                                    });
+
+
+
+
+
                     console.log(`Datos: ${ this.email } - ${ this.password }`)
                     }).catch(function (error2) {
                         console.log(error2)

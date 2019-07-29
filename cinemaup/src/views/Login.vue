@@ -48,7 +48,10 @@
         </v-layout>
         </v-content>
     
-        </v-img>   
+        </v-img>  
+         <v-content>
+      <router-view></router-view>
+    </v-content> 
     </div>
 
 </template>
@@ -77,15 +80,24 @@ export default  {
           axios.get(api).then((response) => {
               console.log(response.data.length)    
               response.data.forEach(element => {
-                console.log("soy elemento " +element)    
+                console.log(element.nombre)    
+                console.log(element.password)
+                console.log(element.correo)
+                if(element.correo==email && element.password==password ){
+                    this.$store.state.login=true;
+                    localStorage.setItem("login","true")
+                    this.$router.push({ path: '/' })
+                }
               });
-            //   localStorage.setItem("username",response.data.user.username)
-            //   localStorage.setItem("email",response.data.user.email)
-            //   this.$store.state.login=true;
-            //   this.$router.push({ path: '' })
+              this.error=true
+              this.errorMesage="Usuario o contraseña incorrectos"
+              
+           
+
           }).catch(function (error2) {
               //esta parte es de control de errores hay que modificar el valor del 
               //error a true para que se muestren no obstante no se como cambiarlo por eso quedo asi 
+              this.error=true;
               this.errorMesage="Usuario o contraseña incorrectos"
             
             });
