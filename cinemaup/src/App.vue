@@ -13,22 +13,31 @@
           ></v-text-field>
         </v-flex>
 
+        
       <v-btn
+        v-if="this.$store.state.login==false"
         flat
-        href=""
-        target="_blank"
+        text
+        class="white--text"
+        href="Login"
       >
-        <span class="mr-2 white--text">Iniciar Sesión</span>
-      </v-btn>  
-
+        Iniciar Sesión
+      </v-btn>
       <v-btn
+        v-if="this.$store.state.login==false"
           text
            href="VIP"
           color="orange"
       >
         VIP
       </v-btn>
-
+      <v-btn
+        v-if="this.$store.state.login==true"
+          text
+          color="orange"
+      >
+        Cerrar sesion
+      </v-btn>
     </v-toolbar>
 
     <v-content>

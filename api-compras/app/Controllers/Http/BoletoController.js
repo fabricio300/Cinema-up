@@ -20,9 +20,9 @@ class BoletoController {
         const boletoInfo = request.only(['idCartelera', 'JSON', 'token', 'cantidadBoletos'])
 
         const boleto = new Boleto()
-        boleto.idPelicula = boletoInfo.idPelicula
-        boleto.IDSala = boletoInfo.IDSala
+        boleto.idCartelera = boletoInfo.idCartelera
         boleto.JSON = boletoInfo.JSON
+        boleto.token = boletoInfo.token
         boleto.cantidadBoletos = boletoInfo.cantidadBoletos
 
         await boleto.save()

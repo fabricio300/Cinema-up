@@ -11,12 +11,13 @@
         
         >
         <v-content >
-        <v-alert v-if="error" :value="true" type="error" dismissible transition="scale-transition" >
-            {{errorMesage}}
-        </v-alert>
+        
         <v-container fluid fill-height>
             <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
+                <v-alert :value="error" type="error" dismissible transition="scale-transition" >
+                    {{errorMesage}}
+                </v-alert>
                 <v-card class="elevation-12">
                 <v-toolbar  dark color="#0d315c">
                     <v-toolbar-title >Iniciar sesion</v-toolbar-title>
@@ -32,7 +33,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn v-if="email==null || password==null" disabled v-on:click="Login(email, password)" color="#0d315c">Iniciar sesion</v-btn>
-                    <v-btn v-if="email&&password!=null"  v-on:click="Login(email, password)" color="#0d315c">Iniciar sesion</v-btn>
+                    <v-btn v-if="email&&password!=null"  class="white--text" v-on:click="Login(email, password)" color="#0d315c">Iniciar sesion</v-btn>
                 </v-card-actions>
                 </v-card>
             </v-flex>
@@ -40,8 +41,8 @@
         </v-container>
         <v-layout align-center column justify-center>
             <h4 class="subheading">¿No tienes cuenta? 
-                <v-btn  flat :to="{name:'Register'}">
-                    <span class="mr-2 white--text">Registrate</span>
+                <v-btn  flat :to="{name:'VIP'}">
+                    <span class="mr-2 white--text">Vuelte VIP</span>
                 </v-btn>
             </h4>
         </v-layout>
@@ -52,7 +53,7 @@
 
 </template>
 
-<script>
+<script lang="js">
 //import axios from "axios";
 export default  {
   data() {
@@ -78,14 +79,12 @@ export default  {
   },
   methods:{
       Login(email, password) {
-  
-            
-       /* let api = "http://127.0.0.1:3333/api/v1"
+        this.error=false;    
+        let api = "http://127.0.0.1:3333/api/v1"
           axios.post(api + "/login",{
             email: email,
             password: password, 
           }).then((response) => {
-              localStorage.setItem("token",response.data.token)
               localStorage.setItem("username",response.data.user.username)
               localStorage.setItem("email",response.data.user.email)
               localStorage.setItem("id",response.data.user.id)
@@ -94,10 +93,10 @@ export default  {
           }).catch(function (error2) {
               //esta parte es de control de errores hay que modificar el valor del 
               //error a true para que se muestren no obstante no se como cambiarlo por eso quedo asi 
-              //this.error=true;
-              //this.errorMesage="Usuario o contraseña incorrectos"
+              this.error=true;
+              this.errorMesage="Usuario o contraseña incorrectos"
             
-            });*/
+            });
         
       },
     },
