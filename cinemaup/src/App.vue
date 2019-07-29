@@ -5,15 +5,6 @@
         <span ><a href="/"  class="white--text" style="text-decoration: none;" >CinemaUP</a></span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-        <v-flex xs12 sm6 class="ml-3" >
-          <v-text-field
-            label="Busca tu pelicula"
-            single-line
-            color="#96B3D9"
-          ></v-text-field>
-        </v-flex>
-
-        
       <v-btn
         v-if="this.$store.state.login==false && login==null "
         flat
