@@ -83,7 +83,7 @@
                 v-if="BoletosAdulto+BoletosNiño==0"
                 disabled
                 color="primary"
-                @click="e1 = 3"
+                @click="crearAcientos()"
                 >
                 Continue
                 </v-btn>
@@ -91,7 +91,7 @@
                 <v-btn
                 v-if="BoletosAdulto+BoletosNiño!=0"
                 color="primary"
-                @click="e1 = 3"
+                @click="crearAcientos()"
                 >
                 Continue
                 </v-btn>
@@ -174,7 +174,7 @@
                 <p style="width:80%; font-size:15px; color:red;">Total a pagar: {{total}}</p>
                 </v-card>
                 
-                <v-btn v-if="email!=null && email!='' " color="primary" v-on:click="pagar(email, total,idCartelera,lugaresComprados,idFuncion)" >
+                <v-btn v-if="email!=null && email!='' " color="primary" v-on:click="pagar(email, total,idCartelera,lugaresComprados,idFuncion,pelicula,funcion,BoletosAdulto,BoletosNiño,fecha,hora)" >
                 Pagar
                 </v-btn>
                 <v-btn v-if="email==null" disabled color="primary" v-on:click="pagar(email, total)" >
@@ -200,7 +200,7 @@
 </template>
 
 <script lang="js">
-
+let doc = new jsPDF()
 let stripe = Stripe(`pk_test_AjSflyejK3J7quTKNeWfBY0v00XIuUpWtP`),
   elements = stripe.elements(),
   card = undefined;
@@ -253,13 +253,14 @@ export default  {
             card.mount(this.$refs.card);
             },
   methods:{
-      selectTime(id) {        
+      selectTime(id, date, hour) {        
         this.idFuncion = id
-        console.log(this.hora);
-        
+        console.log(date)
+        console.log(hour)
+        this.hora=hour
         this.e1=2;
         this.getAcientosComprados()
-        this.crearAcientos()
+        
       },
       addBoletosInfante(BoletosNiño){
           this.BoletosNiño=BoletosNiño+1
@@ -309,12 +310,12 @@ export default  {
           
           
       },
-      pagar(email,total, idCartelera,lugaresComprados,idFuncion){
+      pagar(email,total, idCartelera,lugaresComprados,idFuncion,pelicula,funcion,BoletosAdulto,BoletosNiño,fecha,hour){
             let acientossss=""
             lugaresComprados.forEach(element => {
               console.log("AAAA ",element);
               
-              acientossss=""+element+","+acientossss
+              acientossss=""+element.id+","+acientossss
             });
             console.log("Acientos===== ",acientossss);
             
@@ -339,7 +340,20 @@ export default  {
             }).then(function (response) {
                 // this.$router.push({ path: '/' })
                 console.log("echa la compra");
+                console.log("make PDF");
                 
+                  doc.text('CinemaUP', 10, 20,)
+                  doc.text(''+pelicula, 10, 30)
+                  doc.text('Sala:'+funcion, 10, 40)
+                  doc.text('Horario:'+hour, 10, 50)
+                  doc.text('sus acientos son:', 10, 60)
+                  doc.text(''+acientossss, 25, 70)
+                  doc.text('boletos:', 10, 80)
+                  doc.text('- Adulto:'+BoletosAdulto,25,90)
+                  doc.text('- Niño:'+BoletosNiño,25,100)
+                  doc.text('Codigo de verificación: '+idToken,10,110)
+                  doc.text('Fecha: '+fecha,10,120)
+                  doc.save(''+pelicula+'_'+fecha+'.pdf')
                 
             }).catch(function (error2) {
                 console.log(error2)
@@ -362,9 +376,12 @@ export default  {
         }
       },
       crearAcientos(){
+        this.e1=3
        let tem=[]
        let filasx=[]
        let op=this.asientosOcupados
+       console.log("SSSSSSSSSSSSSS",op);
+       
         for (let index = 0; index < this.filas.length; index++) {
              tem=[]
             for (let i = 0; i <this.numeroDeSillaPorFila; i++) {
@@ -423,26 +440,30 @@ export default  {
             
           console.log(" this.lugaresComprados", this.lugaresComprados);
       },
-      getAcientosComprados(){
-          console.log("Funcion ",this.idFuncion, "  cartelera ",this.idCartelera);
+      async getAcientosComprados(){
+        console.log("Funcion ",this.idFuncion, "  cartelera ",this.idCartelera);
 
-          this.asientosOcupados=["A1","B8","H10","E15","E14","A20","D1"]
-
-
-          axios.get('https://api-django-cinema.herokuapp.com/cartelera/asientos',{
-          params:{
-            idCartelera: this.idCartelera,
-            idFuncion:this.idFuncion
-          }}
+        // this.asientosOcupados=["A1","B8","H10","E15","E14","A20","D1"]
+        this.asientosOcupados=[]
+        let dac=null
+        const URL = 'https://api-django-cinema.herokuapp.com/cartelera/asientos'
+        try {
+          this.asientosOcupados = (await axios.get(URL,{ params:{
+                "idCartelera":this.idCartelera,
+                "idFuncion":this.idFuncion
+              }
+          })).data
+          this.asientosOcupados = this.asientosOcupados.split(',')
           
-          ).then(function (response){
-            console.log("this responce boletos\n",response)
-          }).catch(function (error) {
-              console.log("error "+error)
-          })
-
+          console.log("OCUPADOS:\n",this.asientosOcupados);
           
-      }
+          
+        } catch (error) {
+          console.log('errror en asiento')
+        }
+      },
+      
+     
 
 },
     created(){
