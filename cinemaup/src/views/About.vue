@@ -18,7 +18,7 @@ export default {
   data(){
     return{
       resultado:null,
-      urlApi:'http://127.0.0.1:3333',
+      urlApi:'https://api-usuarios-cinenaup.herokuapp.com',
       nombre:null,
       password:null,
       correo:null,

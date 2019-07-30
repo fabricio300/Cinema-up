@@ -66,8 +66,8 @@
 </template>
 
 <script lang="js">
-  const URL = 'http://192.168.13.121:8000/home/cartelera'
-  import axios from 'axios';
+  const URL = 'https://api-django-cinema.herokuapp.com/cartelera/'
+  
   export default {
     data () {
       return {
@@ -80,7 +80,7 @@
     methods:{
         async GetData(){
             try{
-                const data = (await axios.post(URL)).data
+                const data = (await axios.get(URL)).data
                 this.movies = data
                 console.log(this.movies)
             }catch(ex){

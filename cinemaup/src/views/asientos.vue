@@ -1,14 +1,15 @@
 <template>
 
-<div >
-<v-card  class="mx-auto" style="background-color:transparent" >
-    <v-layout py-4 pl-4>
-      <v-flex shrink>
-        <v-img class="my-auto   " height="500px" min-width="600px" :src=image ></v-img>
-      </v-flex>
-      <v-flex text-center >
-        <v-container >
-          <v-stepper v-model="e1" style="background-color:#024873">
+<div class="contall centrar">
+
+   
+      
+        <div class="centrar" style="width:80%; height:400px; overflow: hidden; margin-top:50px;">
+                    <img :src=image style="width:100%; margin:-40%">
+        </div>
+        <div >    
+        <v-container margin="auto"   style="width:100%;  overflow: hidden;">
+          <v-stepper v-model="e1" style="background-color:#024873 color:white;">
             <v-stepper-header>
             <v-stepper-step class="white--text" :complete="e1 > 1" step="1">Horario</v-stepper-step>
 
@@ -54,34 +55,9 @@
                     class="py-3 px-3 mb-5"
                     style="display:flex; background-color: #96B3D9"
                 >
-                    <div>
-                        <div style="display:flex">
-                            <p style="font-size:40px; color:#024873" class="ml-2"> Pelicula: </p>
-                            <p class="pt-2 ml-3"  style="font-size:30px; color:#024873"> {{ pelicula }} </p>
-                        </div> 
+                    
 
-                        <div style="display:flex">
-                            <p style="font-size:40px" class="ml-2 white--text"> Clasificación: </p>
-                            <p class="pt-2 ml-3 white--text" style="font-size:30px"> {{ clasificacion }} </p>
-                        </div>   
-
-                        <div style="display:flex">
-                            <p style="font-size:40px" class="ml-2 white--text"> Fecha: </p>
-                            <p class="pt-2 ml-3 white--text" style="font-size:30px"> {{ fecha }} </p>
-                        </div>   
-
-                        <div style="display:flex">
-                            <p style="font-size:40px" class="ml-2"> Función: </p>
-                            <p class="pt-2 ml-3 white--text" style="font-size:30px"> {{ funcion }} </p>
-                        </div>  
-
-                        <div style="display:flex">
-                            <p style="font-size:40px" class="ml-2"> Duración: </p>
-                            <p class="pt-2 ml-3" style="font-size:30px"> {{ duracion }} </p>
-                        </div>                   
-                    </div>
-
-                    <div  class="mx-auto" style="width: 50%; background-color: #2F4F4F">
+                    <div  class="mx-auto" style="width: 500px; background-color: #2F4F4F">
 
                         <p class="display-2 mt-4 white--text" style="text-align:center" > SUBTOTAL </p>
                         <p class="display-1 white--text"  style="text-align:center;" > Total: {{total}}  </p>
@@ -120,41 +96,53 @@
                 Continue
                 </v-btn>
 
-                <v-btn text @click="e1 = 1" >Cancel</v-btn>
+                <v-btn text @click="e1 = 1" >Regresar</v-btn>
             </v-stepper-content>
 
             <v-stepper-content step="3">
-                <v-card
-                class="mb-12"
-                color="grey lighten-1"
-                height="200px"
-                ></v-card>
+                <div class="contenidoBara">
+         
+          <div class="indicaciones centrar" style="color:white">
+             <p style="width: 100%; text-align: center; color: gold;">Eliga sus asientos</p>
+            <p style="width: 100%; text-align: center;">De click sobre un lugar disponible para selecionar, para cambiar lugar de click sobre un lugar apartado y escoja otro</p><br>
+            <div class="asientos"></div>
+            <p style="margin-right:5px;">disponible</p>
+            <div class="asientos apartado"></div>
+             <p style="margin-right:5px;">apartado</p>
+            <div class="asientos ocupado"></div>
+            <p style="margin-right:5px;">ocupado</p>
+            <p style="margin-left:80px;  border-bottom:2px solid gold;">Lugares adquiridos {{apartados}}/{{boletosTotales}}</p>
+          </div>
+          <div class="patalla centrar" style="color:white">
+            pantalla
+          </div>
+          <div class="Contasientos centrar">
+        
+              <div class="filas centrar"  v-for="fil in  asientosx" v-bind:key="fil">
+                <p style="margin:7px;">{{fil.filaP}}</p>
+                
+                <div class="asientos centrar"
+                  v-for="aciento in fil.sillas" :key="aciento"
+                  v-bind:id="aciento.id"
+                  v-bind:class="{'ocupado' : aciento.status == true}"
+                  @click="getAciento(aciento)" 
+                >
+                  <p>{{aciento.numero}}</p>
+                </div>
+                
+                
+              </div>
 
-                <v-container  row>
-                    <v-btn v-on:click="cambiarEstado(0)" :color="asientos[0].color" >A1</v-btn>
-                    <v-btn v-on:click="cambiarEstado(1)" :color="asientos[1].color" >B1</v-btn>
-                    <v-btn v-on:click="cambiarEstado(2)" :color="asientos[2].color" >C1</v-btn>
-                    <v-btn v-on:click="cambiarEstado(3)" :color="asientos[3].color" >D1</v-btn>
-                </v-container>
-                <v-container row>
-                    <v-btn v-on:click="cambiarEstado(4)" v-bind:color="asientos[4].color" >A2</v-btn>
-                    <v-btn v-on:click="cambiarEstado(5)" :color="asientos[5].color" >B2</v-btn>
-                    <v-btn v-on:click="cambiarEstado(6)" :color="asientos[6].color" >C2</v-btn>
-                    <v-btn v-on:click="cambiarEstado(7)" :color="asientos[7].color" >D2</v-btn>
-                </v-container>
+              
 
+          </div>
 
-                <!-- <v-container row  v-for="asiento in asientos"  v-bind:key="asiento"> 
-                    <v-btn v-if="asiento.status==1" disabled color="primary" >
-                        {{asiento.name}}
-                    </v-btn>
-                    <v-btn v-else-if="asiento.status==0" color="primary" >
-                        {{asiento.name}}
-                    </v-btn>
-                </v-container> -->
+      </div>
+
+               
                 
                 <v-btn
-                v-if="boletosTotales!=0"
+                v-if="apartados!=boletosTotales"
                 disabled
                 color="primary"
                 @click="e1 = 4"
@@ -163,14 +151,14 @@
                 </v-btn>
 
                 <v-btn
-                v-if="boletosTotales==0"
+                v-if="apartados==boletosTotales"
                 color="primary"
                 @click="e1 = 4"
                 >
                 Continue
                 </v-btn>
 
-                <v-btn text @click="e1 = 2">Cancel</v-btn>
+                <v-btn text @click="e1 = 2">Regresar</v-btn>
             </v-stepper-content>
             <v-stepper-content step="4">
                 <v-card
@@ -192,19 +180,18 @@
 
                
 
-                <v-btn text @click="e1 = 3">Cancel</v-btn>
+                <v-btn text @click="e1 = 3">Regresar</v-btn>
             </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
         </v-container>
-      </v-flex>
-    </v-layout>
+    
 
-  </v-card>
+  
   <v-content>
     <router-view></router-view>
   </v-content>
-
+   </div>
 </div>
 
 </template>
@@ -237,8 +224,13 @@ export default  {
         duracion: "",
         image: null,
         idCartelera: null,
-        idFuncion: null
-        
+        idFuncion: null,
+        filas:["A","B","C","D","E","F","G","H"],
+        numeroDeSillaPorFila:20,
+        asientosx:[],
+        asientosOcupados:[],
+        apartados:0,
+        lugaresComprados:[],
 
     };
   },
@@ -350,18 +342,98 @@ export default  {
             var hour = (date[3].split('+'))[0]
             this.arryHorarios[i] = { 'id': date[0][1], 'date': date[2], 'hour':hour }
         }
+      },
+      crearAcientos(){
+       let tem=[]
+       let filasx=[]
+       let op=["A1","B8","H10","E15","E14","A20","D1"]
+        for (let index = 0; index < this.filas.length; index++) {
+             tem=[]
+            for (let i = 0; i <this.numeroDeSillaPorFila; i++) {
+                let n=i+1
+                let idA=""+this.filas[index]+n
+                let silla=null
+                if(op.includes(idA)){
+                    silla={fila:this.filas[index],numero:n,status:true,id:idA}
+                }else{
+                    silla={fila:this.filas[index],numero:n,status:false,id:idA}
+                }
+                tem.push(silla)
+            }
+            let filla={filaP:this.filas[index],sillas:tem}
+            filasx.push(filla)
+        }
+        this.asientosx=filasx
+        
+      },
+      getAciento(acineto){
+            let auc=[]
+            let ay=null
+            let pa=false
+            if(acineto.status==false){
+              console.log("valiodo");
+              this.lugaresComprados.forEach(element => {
+                    console.log("v ",element.id);
+                    if(element.id==acineto.id){
+                       pa=true
+                    }
+              });
+
+              if(pa==true){
+                    this.lugaresComprados.forEach(element => {
+                      if(element.id!=acineto.id){
+                        auc.push(element)
+                      }
+                    });
+                  this.lugaresComprados=auc
+                  this.apartados--
+                  document.getElementById(acineto.id).className="asientos "
+              }else{
+                if(this.apartados<this.boletosTotales){
+                    ay={id:acineto.id,asiento:acineto}
+                    this.lugaresComprados.push(ay)
+                    this.apartados++
+                    document.getElementById(acineto.id).className="asientos apartado"
+                }
+              }
+              
+
+
+            }else{
+              console.log("no valiodo");
+            }
+            
+          console.log(" this.lugaresComprados", this.lugaresComprados);
+      },
+      getAcientosComprados(){
+          console.log("Funcion ",this.idFuncion, "  cartelera ",this.idCartelera);
+          
+          axios.get('https://api-django-cinema.herokuapp.com/cartelera/asientos',{
+          params:{
+            idCartelera: this.idCartelera,
+            idFuncion:this.idFuncion
+          }}
+          
+          ).then(function (response){
+            console.log("this responce boletos\n",response)
+          }).catch(function (error) {
+              console.log("error  bbbb")
+          })
+
+          
       }
 
 },
     created(){
-
+        this.getAcientosComprados()
+        this.crearAcientos()
         this.movie = JSON.parse(localStorage.getItem('movie'))
         this.pelicula= this.movie.pelicula.nombre
         this.clasificacion= this.movie.pelicula.clasificacion
         this.fecha= "12-05-2019"
         this.funcion= this.movie.sala.sala
         this.duracion= this.movie.pelicula.duracion
-        this.image = this.movie.pelicula.imagen
+        this.image = this.movie.pelicula.poster
         this.GetFunciones(this.movie.funciones.split(','));
         this.idCartelera = this.movie.idCartelera
 
@@ -397,5 +469,204 @@ export default  {
 </script>
 
 <style>
+
+.centrar{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+ 
+}
+.contall{
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    background: black;
+    color: white;
+   
+}
+.monocromatico{
+  background: white;
+  color: black;
+  margin: 5px;
+  width: 100px;
+  
+}
+.contimagen{
+    height: auto;
+    width: 500px;
+    background: transparent;
+    color: black;
+    margin: auto;
+  
+}
+
+.cuadro{
+    background: #0d315c;
+    width: 65%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.barraItems{
+  width: 100%;
+  border-bottom: 1px solid gold;
+  padding-top: 5px;
+}
+
+.item{
+  margin: auto;
+  font-size: 18px;
+  transition: 0.5s;
+   border-bottom: 4px solid transparent;
+}
+
+.actual{
+  transition: 0.5s;
+  border-bottom: 4px solid gold;
+}
+
+.contenidoBara{
+  width: 100%;
+  min-height: 400px;
+  height: auto;
+  position: relative;
+  background: #024873;
+  position: relative;
+}
+
+.barrabotones{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  padding: 2px;
+ justify-content:flex-end;
+  
+}
+.botones{
+  padding: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid white;
+  margin: 2px;
+}
+
+.contHorarios{
+  background: #0d315c;
+  padding: 10px;
+}
+.Contasientos{
+  background: grey;
+  width: 98%;
+  margin: auto;
+  margin-bottom: 40px;
+}
+
+.filas{
+  
+  display: flex;
+  width: 100%;
+  padding: 2px;
+  
+}
+
+.asientos{
+  background: white;
+  color: black;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  cursor: pointer;
+  margin: 2px ;
+  border-bottom-left-radius: 50%;
+   border-bottom-right-radius: 50%;
+}
+
+.patalla{
+  background: black;
+
+  margin-bottom: 5px;
+}
+
+.ocupado{
+  background: red;
+}
+
+.apartado{
+  background: #32CD32;
+}
+
+.indicaciones{
+  padding: 5px;
+  width: 100%;
+}
+
+.datos{
+  width: 60%;
+  
+  padding: 5px;
+}
+label{
+  margin: 10px;
+  margin-top: 50px;
+  font-size: 19px;
+}
+
+.dinero{
+  background: #2F4F4F;
+  margin-top: 10px;
+  width: 170px;
+  padding: 8px;
+}
+
+.opboletos{
+  background: black;
+  width: 100%;
+  padding: 15px;
+  margin-bottom:20px;
+}
+
+.tiposDeBoleto,.precios,.cantidadDeBoletos{
+  width: 30%;
+  
+}
+.pagos{
+  width: 100%;
+  
+  height: 80%;
+  color: black
+}
+
+.conteflec{
+  display: flex;
+  width: 400%;
+  transition: 0.5s;
+ 
+}
+
+@media(max-width: 990px){
+.cuadro{
+  width: 90%;
+}
+
+.contimagen{
+    height: auto;
+    width: 50%;
+    
+    }
+
+.asientos{
+  width: 20px;
+  height: 20px;
+  
+  }
+
+  .datos{
+    text-align: center;
+  }
+}
+
 
 </style>
