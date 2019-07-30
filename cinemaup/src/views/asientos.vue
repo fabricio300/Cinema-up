@@ -8,9 +8,9 @@
                     <img :src=image style="width:100%; margin:-40%">
         </div>
         <div >    
-        <v-container margin="auto"   style="width:100%;  overflow: hidden;">
-          <v-stepper v-model="e1" style="background-color:#024873 color:white;">
-            <v-stepper-header>
+        <v-container margin="auto"   style="width:100%;   overflow: hidden;">
+          <v-stepper v-model="e1" style="background-color:#024873; color:white;">
+            <v-stepper-header style="background-color:#024873;">
             <v-stepper-step class="white--text" :complete="e1 > 1" step="1">Horario</v-stepper-step>
 
             <v-divider></v-divider>
