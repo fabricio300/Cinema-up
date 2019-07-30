@@ -53,7 +53,7 @@
             <v-stepper-content step="2">
                 <v-card
                     class="py-3 px-3 mb-5"
-                    style="display:flex; background-color: #96B3D9"
+                    style="display:flex; background-color: #2F4F4F"
                 >
                     
 
@@ -162,16 +162,19 @@
             </v-stepper-content>
             <v-stepper-content step="4">
                 <v-card
-                class="mb-12"
+                class="mb-12 centrar"
                 color="grey lighten-1"
-                height="200px" ></v-card>
-                <v-text-field v-model="email"  color="primary" prepend-icon="email" name="correo" label="Correo" type="text"></v-text-field>
+                height="200px" >
+                <v-text-field v-model="email" style="width:80%;" color="primary" prepend-icon="email" name="correo" label="Correo" type="text"></v-text-field>
                 <br>
-                 Total a pagar: {{total}}
-                <div>
+                 
+                <div style="width:80%;">
                     <div ref="card"></div>
                 </div>
-                <v-btn v-if="email!=null && email!='' " color="primary" v-on:click="pagar(email, total)" >
+                <p style="width:80%; font-size:15px; color:red;">Total a pagar: {{total}}</p>
+                </v-card>
+                
+                <v-btn v-if="email!=null && email!='' " color="primary" v-on:click="pagar(email, total,idCartelera,lugaresComprados,idFuncion)" >
                 Pagar
                 </v-btn>
                 <v-btn v-if="email==null" disabled color="primary" v-on:click="pagar(email, total)" >
@@ -255,6 +258,8 @@ export default  {
         console.log(this.hora);
         
         this.e1=2;
+        this.getAcientosComprados()
+        this.crearAcientos()
       },
       addBoletosInfante(BoletosNiño){
           this.BoletosNiño=BoletosNiño+1
@@ -304,31 +309,44 @@ export default  {
           
           
       },
-      pagar(email,total){
-
+      pagar(email,total, idCartelera,lugaresComprados,idFuncion){
+            let acientossss=""
+            lugaresComprados.forEach(element => {
+              console.log("AAAA ",element);
+              
+              acientossss=""+element+","+acientossss
+            });
+            console.log("Acientos===== ",acientossss);
+            
         console.log(  
-            ` idCartelera: ${ this.idCartelera }, 
-              idFuncion: ${ this.idFuncion }, 
+            ` idCartelera: ${ idCartelera }, 
+              idFuncion: ${ idFuncion }, 
               cantidadBoletos: ${ total }
-              email: ${ email }` )
+              email: ${ email },
+              asientos: ${ lugaresComprados },
+              `
+               )
 
-        // stripe.createToken(card).then(function(result) {
-        //     console.log(result.token.id)
-        //     axios.post("https://api-compras-cinema-up.herokuapp.com/api/v1/Boletos/", {
-        //         idCartelera: this.idCartelera,
-        //         idFuncion: this.idFuncion,
-        //         JSON:"hola",
-        //         token:result.token.id,
-        //         cantidadBoletos:total
-        //     }).then(function (response) {
-        //         this.$router.push({ path: '/' })
+        stripe.createToken(card).then(function(result) {
+            console.log(result.token.id)
+            let idToken=result.token.id
+            axios.post("https://api-compras-cinema-up.herokuapp.com/api/v1/Boletos/", {
+                idCartelera:idCartelera,
+                idFuncion:idFuncion,
+                JSON: acientossss,
+                token:idToken,
+                cantidadBoletos:total
+            }).then(function (response) {
+                // this.$router.push({ path: '/' })
+                console.log("echa la compra");
                 
-        //     }).catch(function (error2) {
-        //         console.log(error2)
-        //     });
-        // }).catch(function (error2) {
-        //     console.log(error2)
-        // });
+                
+            }).catch(function (error2) {
+                console.log(error2)
+            });
+        }).catch(function (error2) {
+            console.log(error2)
+        });
 
       },
       GetFunciones(funciones){
@@ -346,7 +364,7 @@ export default  {
       crearAcientos(){
        let tem=[]
        let filasx=[]
-       let op=["A1","B8","H10","E15","E14","A20","D1"]
+       let op=this.asientosOcupados
         for (let index = 0; index < this.filas.length; index++) {
              tem=[]
             for (let i = 0; i <this.numeroDeSillaPorFila; i++) {
@@ -407,7 +425,10 @@ export default  {
       },
       getAcientosComprados(){
           console.log("Funcion ",this.idFuncion, "  cartelera ",this.idCartelera);
-          
+
+          this.asientosOcupados=["A1","B8","H10","E15","E14","A20","D1"]
+
+
           axios.get('https://api-django-cinema.herokuapp.com/cartelera/asientos',{
           params:{
             idCartelera: this.idCartelera,
@@ -417,7 +438,7 @@ export default  {
           ).then(function (response){
             console.log("this responce boletos\n",response)
           }).catch(function (error) {
-              console.log("error  bbbb")
+              console.log("error "+error)
           })
 
           
@@ -425,8 +446,7 @@ export default  {
 
 },
     created(){
-        this.getAcientosComprados()
-        this.crearAcientos()
+        
         this.movie = JSON.parse(localStorage.getItem('movie'))
         this.pelicula= this.movie.pelicula.nombre
         this.clasificacion= this.movie.pelicula.clasificacion

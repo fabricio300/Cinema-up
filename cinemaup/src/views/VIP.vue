@@ -73,7 +73,7 @@ let stripe = Stripe(`pk_test_AjSflyejK3J7quTKNeWfBY0v00XIuUpWtP`),
             },
         methods:{
             registrar(password, password2, name ,email ,status){
-            
+                  
                 if(true){
                     stripe.createToken(card).then(function(result) {
                     console.log(result.token.id)
@@ -91,10 +91,12 @@ let stripe = Stripe(`pk_test_AjSflyejK3J7quTKNeWfBY0v00XIuUpWtP`),
                                         monto:10,
                                           
                                     }).then(function (response) {
+                                        console.log("echa la");
+                                       this.correP()
                                         console.log(response);
-                                        this.$store.state.login=true;
-                                        localStorage.setItem("login","true")
-                                        this.$router.push({ path: '/' })
+                                      
+                                        
+                                    
                                         
                                     }).catch(function (error2) {
                                         console.log(error2)
@@ -112,15 +114,21 @@ let stripe = Stripe(`pk_test_AjSflyejK3J7quTKNeWfBY0v00XIuUpWtP`),
 
 
 
-                    console.log(`Datos: ${ this.email } - ${ this.password }`)
+                   
                     }).catch(function (error2) {
                         console.log(error2)
                         this.errorMesage="Usuario o contraseña incorrectos"
                     });
 
+                        
                 }
                 
-            }
+            },
+            correP(){
+                    this.$store.state.login=true;
+                    localStorage.setItem("login","true")
+                    this.$router.replace('/');
+            },
             
         },
         beforeDestroy() {
